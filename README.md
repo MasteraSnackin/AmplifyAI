@@ -13,10 +13,19 @@
 
 **🎥 [Watch the Demo Video](https://share.screenshow.app/shareablevideos/ueIVv7)** &nbsp;•&nbsp; **📊 [View the Pitch Deck](https://drive.google.com/file/d/10jqSESQXiAlqUqGHC_CZte-8XVZbPKOc/view?usp=sharing)**
 
+<p align="center">
+  <a href="https://share.screenshow.app/shareablevideos/ueIVv7">
+    <img src="docs/screenshots/video-thumbnail.png" alt="▶ Watch the AmplifyAI demo video" width="720">
+  </a>
+</p>
+
+<p align="center"><b>▶️ <a href="https://share.screenshow.app/shareablevideos/ueIVv7">Click to watch the demo</a></b></p>
+
 ---
 
 
 ## Description
+
 
 
 **AmplifyAI** is an AI-powered marketing agent that acts as a "Senior Marketing Strategist in a box." Instead of manually watching hours of webinars, keynotes, podcasts, or event footage, you upload the video (or paste a YouTube link), define your **Target Audience**, **Campaign Goal**, and **Brand Tone**, and AmplifyAI uses **Google's Gemini 3.5 multimodal model** to automatically produce high-engagement, platform-ready marketing assets.
@@ -222,20 +231,10 @@ GEMINI_API_KEY=your_google_ai_studio_api_key
 
 ## Screenshots / Demo
 
-### 🎥 Video Demo
-
-Watch the full walkthrough of AmplifyAI turning raw footage into quizzes, ad scripts, and social campaigns. **Click the thumbnail below to play:**
-
-<p align="center">
-  <a href="https://share.screenshow.app/shareablevideos/ueIVv7">
-    <img src="docs/screenshots/video-thumbnail.png" alt="▶ Watch the AmplifyAI demo video" width="720">
-  </a>
-</p>
-
-<p align="center"><b>▶️ <a href="https://share.screenshow.app/shareablevideos/ueIVv7">Watch the Demo Video</a></b></p>
-
+> 🎥 **Prefer video?** [Watch the full demo walkthrough](https://share.screenshow.app/shareablevideos/ueIVv7) (also linked at the top of this README).
 
 ### Interactive Quizzes & Viral Scoring
+
 
 The results dashboard pairs the source video (with a live "Viral Hook" caption overlay and sentiment timeline) with AI-generated trivia, per-question Viral Scores, and strategic reasoning.
 
