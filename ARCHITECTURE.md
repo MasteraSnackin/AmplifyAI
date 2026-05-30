@@ -6,8 +6,7 @@
 
 Architecturally, AmplifyAI is a **client-side Single Page Application (SPA)**. There is no bespoke backend server; the browser is the application host. The React UI captures the user's media and marketing strategy, a thin **service layer** performs prompt engineering and media encoding, and all heavy inference is delegated to the external Gemini API. Results are rendered in an interactive dashboard and cached locally so work survives a page refresh. This design keeps the system simple to deploy and operate while still delivering rich, AI-driven functionality.
 
-> ⚠️ **Assumption marker:** The current design is optimised for a demo/hackathon context. Production-grade concerns (server-side key handling, persistence, multi-user state) are called out as `<ADD DETAIL HERE>` placeholders where relevant.
-
+> ⚠️ **Assumption marker:** The current design is optimised for a demo/hackathon context. Production-grade concerns (server-side key handling, persistence, multi-user state) are called out.
 ---
 
 ## Key Requirements
