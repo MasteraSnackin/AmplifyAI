@@ -11,9 +11,12 @@
 ![Vite](https://img.shields.io/badge/Vite-6-646cff)
 ![AI](https://img.shields.io/badge/AI-Gemini%203.5%20Flash-4f46e5)
 
+**🎥 [Watch the Demo Video](https://share.screenshow.app/shareablevideos/ueIVv7)**
+
 ---
 
 ## Description
+
 
 **AmplifyAI** is an AI-powered marketing agent that acts as a "Senior Marketing Strategist in a box." Instead of manually watching hours of webinars, keynotes, podcasts, or event footage, you upload the video (or paste a YouTube link), define your **Target Audience**, **Campaign Goal**, and **Brand Tone**, and AmplifyAI uses **Google's Gemini 3.5 multimodal model** to automatically produce high-engagement, platform-ready marketing assets.
 
@@ -218,7 +221,18 @@ GEMINI_API_KEY=your_google_ai_studio_api_key
 
 ## Screenshots / Demo
 
+### 🎥 Video Demo
+
+Watch the full walkthrough of AmplifyAI turning raw footage into quizzes, ad scripts, and social campaigns:
+
+**▶️ [Watch the Demo Video](https://share.screenshow.app/shareablevideos/ueIVv7)**
+
+[![Watch the AmplifyAI demo](docs/screenshots/results-quizzes.png)](https://share.screenshow.app/shareablevideos/ueIVv7)
+
+> Click the image above to play the demo.
+
 ### Interactive Quizzes & Viral Scoring
+
 The results dashboard pairs the source video (with a live "Viral Hook" caption overlay and sentiment timeline) with AI-generated trivia, per-question Viral Scores, and strategic reasoning.
 
 ![Analysis Results — Interactive Quizzes](docs/screenshots/results-quizzes.png)
@@ -243,7 +257,8 @@ A goal-aware performance dashboard with KPI cards and interactive Recharts visua
 
 ![Performance Tracking dashboard](docs/screenshots/analytics-dashboard.png)
 
-**Live demo:** `<ADD LIVE DEMO URL HERE>`
+**Live demo / video walkthrough:** [share.screenshow.app/shareablevideos/ueIVv7](https://share.screenshow.app/shareablevideos/ueIVv7)
+
 
 ---
 
