@@ -333,12 +333,10 @@ Distributed under the **MIT License**. See the [`LICENSE`](./LICENSE) file for f
 
 ## Contact / Support
 
-- **Maintainer:** `<ADD MAINTAINER NAME HERE>`
-- **GitHub:** `<ADD GITHUB PROFILE URL HERE>`
-- **Website:** `<ADD WEBSITE URL HERE>`
-- **Email:** `<ADD CONTACT EMAIL HERE>`
+- **Maintainer:** `@masterasnackin`
+- **GitHub:** `@masterasnackin`
 
-For questions, bug reports, or feature requests, please [open an issue](https://github.com/<YOUR_GITHUB_USERNAME>/AmplifyAI/issues).
+For questions, bug reports, or feature requests, please [open an issue](https://github.com/masterasnackin/AmplifyAI/issues).
 
 ---
 
