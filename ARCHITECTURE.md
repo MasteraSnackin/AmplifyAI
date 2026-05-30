@@ -15,7 +15,7 @@ C4Context
     
     System(amplifyAI, "AmplifyAI App", "React/Vite Application. Analyzes video, generates viral scores, ad scripts, and social content.")
 
-    System_Ext(gemini, "Google Gemini API", "Multimodal LLM (Gemini 2.5 Flash). Processes video frames and audio to generate insights.")
+    System_Ext(gemini, "Google Gemini API", "Multimodal LLM (Gemini 3.5). Processes video frames and audio to generate insights.")
     System_Ext(youtube, "YouTube", "External video source (via Iframe/Embed).")
     System_Ext(social_media, "Social Platforms", "LinkedIn, Twitter, Instagram where generated content is published.")
 
@@ -107,7 +107,7 @@ sequenceDiagram
     Service->>Service: Construct Prompt ("Act as Marketing Strategist...")
     Service->>Service: Inject Strategy Variables & Transcript
     
-    Service->>Google: POST generateContent(model='gemini-2.5-flash')
+    Service->>Google: POST generateContent(model='gemini-3.5-flash')
     activate Google
     Google-->>Service: Return JSON (Quizzes, Viral Scores, Ad Scripts)
     deactivate Google
@@ -218,7 +218,7 @@ flowchart TD
 
     InputProcessor -- Base64 Data + Context --> PromptEngine
     PromptEngine -- Structured Prompt --> GeminiClient
-    GeminiClient -- API Request --> GeminiModel((Gemini 2.5 Flash))
+    GeminiClient -- API Request --> GeminiModel((Gemini 3.5))
     GeminiModel -- JSON Response --> GeminiClient
     GeminiClient -- Raw JSON --> SchemaValidator
     

@@ -154,12 +154,12 @@ export const analyzeVideoAndGenerateContent = async (
     const apiKey = getApiKey();
 
     const ai = new GoogleGenAI({ apiKey });
-    const model = "gemini-2.5-flash"; 
+    const model = "gemini-3.5-flash"; 
 
     const responseSchema = getSchema(questionCount, strategy, language);
 
     const prompt = `
-    ACT AS A SENIOR MARKETING STRATEGIST.
+    ACT AS A SENIOR MARKETING STRATEGIST & HIGHLY AUTONOMOUS ACQUISITION WRITER.
     
     CAMPAIGN PARAMETERS:
     - Target Audience: ${strategy.targetAudience}
@@ -172,10 +172,16 @@ export const analyzeVideoAndGenerateContent = async (
     TRANSCRIPT:
     "${transcript.substring(0, 30000)}..." (Truncated if too long)
 
-    TASK:
-    Analyze this transcript to find the most impactful moments.
+    TASK & BRAND VOICE PARAMETERS:
+    Analyze this transcript to find the most impactful, high-emotional-resonance moments.
     
-    1. Summarize content highlighting value for the Target Audience.
+    CRITICAL HUMAN-VOICE DIRECTIVES:
+    - Avoid all typical AI copywriting slang, patterns, and corporate fluff. Strictly do NOT use buzzwords like: "delve", "pivotal", "elevate", "thrilled", "revolutionize", "tapestry", "beacon", "look no further", "unlock your potential", "it is clear".
+    - Write like an experienced, direct, and thoughtful industry insider or content creator. Use crisp sentence lengths, active verbs, and clear value statements.
+    - Emojis must be used selectively (maximum 1-2 per post, only where they feel natural—no emoji-dumping).
+    - Make the scripts flow like professional presentations or natural conversational videos, ideal for realistic voiceover.
+
+    1. Summarize content highlighting value for the Target Audience in a genuine, direct manner.
     2. Create ${questionCount} quiz questions based on real facts from the text. 
        - Estimate timestamps (in seconds) based on the flow of the text if not explicit.
        - Calculate a "Viral Score" (1-100).
@@ -230,10 +236,10 @@ export const analyzeVideoAndGenerateContent = async (
 
   const base64Video = await processVideoFile(input);
   const responseSchema = getSchema(questionCount, strategy, language);
-  const model = "gemini-2.5-flash"; 
+  const model = "gemini-3.5-flash"; 
 
   let prompt = `
-    ACT AS A SENIOR MARKETING STRATEGIST & VIDEO EDITOR.
+    ACT AS A SENIOR MARKETING STRATEGIST, COPYWRITER & VIDEO EDITOR.
     
     CAMPAIGN PARAMETERS:
     - Target Audience: ${strategy.targetAudience}
@@ -241,10 +247,16 @@ export const analyzeVideoAndGenerateContent = async (
     - Brand Tone: ${strategy.brandTone}
     - Output Language: ${language}
 
-    TASK:
+    TASK & BRAND COPY DIRECTIVES:
     Analyze this video to find the most "viral" or impactful moments that will resonate with the specific Target Audience.
     
-    1. Summarize content highlighting value propositions for the Target Audience.
+    CRITICAL HUMAN-VOICE DIRECTIVES:
+    - Avoid all typical AI copywriting slang, patterns, and corporate fluff. Strictly do NOT use buzzwords like: "delve", "pivotal", "elevate", "thrilled", "revolutionize", "tapestry", "beacon", "look no further", "unlock your potential", "it is clear".
+    - Write like an experienced, direct, and thoughtful industry insider or content creator. Use crisp sentence lengths, active verbs, and clear value statements.
+    - Emojis must be used selectively (maximum 1-2 per post, only where they feel natural—no emoji-dumping).
+    - Make the scripts flow like professional presentations or natural conversational videos, ideal for realistic voiceover.
+
+    1. Summarize content highlighting value propositions for the Target Audience in a clean, natural manner.
     2. Create ${questionCount} quiz questions based on high-impact moments. 
        - Calculate a "Viral Score" (1-100) based on emotional impact.
        - Provide "Reasoning" for the strategy.

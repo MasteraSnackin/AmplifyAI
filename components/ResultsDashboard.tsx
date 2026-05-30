@@ -34,6 +34,14 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ data, videoS
   const [hashtagInput, setHashtagInput] = useState('');
   const [copiedState, setCopiedState] = useState(false);
   const [copiedScript, setCopiedScript] = useState<number | null>(null);
+
+  // Narrator Studio Config State
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [selectedVoiceName, setSelectedVoiceName] = useState<string>('');
+  const [narratorRate, setNarratorRate] = useState<number>(0.95); // 0.95 sounds very deliberate, warm and human-like
+  const [narratorPitch, setNarratorPitch] = useState<number>(1.0);
+  const [activeSpeechType, setActiveSpeechType] = useState<'none' | 'test' | 'quiz' | 'ad'>('none');
+  const [speechActiveId, setSpeechActiveId] = useState<number | null>(null);
   
   // Video State
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -63,6 +71,92 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ data, videoS
       }
     }
   }, [videoSource]);
+
+  // Synchronize Voices with browser's speechSynthesis engine
+  useEffect(() => {
+    const loadVoices = () => {
+      if (typeof window === 'undefined' || !window.speechSynthesis) return;
+      const allVoices = window.speechSynthesis.getVoices();
+      setVoices(allVoices);
+
+      // Extract current ISO prefix from language map
+      const currentLangCode = LANGUAGE_CODES[data.language || 'English'] || 'en-US';
+      const langPrefix = currentLangCode.substring(0, 2).toLowerCase();
+      
+      const subList = allVoices.filter(v => {
+        const vLang = v.lang.toLowerCase().replace('_', '-');
+        return vLang.startsWith(langPrefix) || vLang.split('-')[0] === langPrefix;
+      });
+
+      // Filter and sort premium/natural voices to stay on top
+      const sorted = [...subList].sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        const isPremiumA = nameA.includes('natural') || nameA.includes('neural') || nameA.includes('google') || nameA.includes('siri') || nameA.includes('premium') || nameA.includes('guy') || nameA.includes('jenny');
+        const isPremiumB = nameB.includes('natural') || nameB.includes('neural') || nameB.includes('google') || nameB.includes('siri') || nameB.includes('premium') || nameB.includes('guy') || nameB.includes('jenny');
+        if (isPremiumA && !isPremiumB) return -1;
+        if (!isPremiumA && isPremiumB) return 1;
+        return 0;
+      });
+
+      if (sorted.length > 0) {
+        setSelectedVoiceName(sorted[0].name);
+      } else if (allVoices.length > 0) {
+        setSelectedVoiceName(allVoices[0].name);
+      }
+    };
+
+    loadVoices();
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, [data.language]);
+
+  // Handle narration triggers safely
+  const startNarratorSpeak = (text: string, type: 'test' | 'quiz' | 'ad', id: number | null) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+
+    window.speechSynthesis.cancel();
+
+    if (activeSpeechType === type && speechActiveId === id) {
+      setActiveSpeechType('none');
+      setSpeechActiveId(null);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voiceObj = voices.find(v => v.name === selectedVoiceName);
+    
+    if (voiceObj) {
+      utterance.voice = voiceObj;
+    } else {
+      utterance.lang = LANGUAGE_CODES[data.language || 'English'] || 'en-US';
+    }
+
+    // Use our customized human speed pacing and pitch controls
+    utterance.rate = narratorRate;
+    utterance.pitch = narratorPitch;
+
+    utterance.onend = () => {
+      setActiveSpeechType('none');
+      setSpeechActiveId(null);
+    };
+    utterance.onerror = () => {
+      setActiveSpeechType('none');
+      setSpeechActiveId(null);
+    };
+
+    setActiveSpeechType(type);
+    setSpeechActiveId(id);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopNarratorSpeak = () => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    setActiveSpeechType('none');
+    setSpeechActiveId(null);
+  };
 
   const onTimeUpdate = () => {
     if (videoRef.current) {
@@ -468,7 +562,7 @@ CTA: ${s.callToAction}
               <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3" /> Analysis Complete
               </span>
-              <span className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Gemini 2.5 Flash</span>
+              <span className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Gemini 3.5</span>
               {data.language && (
                  <span className="text-indigo-600 bg-indigo-50 border border-indigo-100 text-xs font-bold px-2 py-1 rounded-full">
                     {data.language}
@@ -496,6 +590,158 @@ CTA: ${s.callToAction}
                 View Campaign Analytics
               </button>
             </div>
+          </div>
+
+          {/* Narrator Voice Customizer */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+            <div className="flex items-center gap-2.5 pb-2 border-b border-slate-100">
+              <div className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg">
+                <Mic2 className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-slate-800">Narrator Voice Customizer</h3>
+                <p className="text-[10px] text-slate-400 font-medium">Configure human-sounding brand narrator profiles</p>
+              </div>
+            </div>
+
+            {voices.length === 0 ? (
+              <div className="p-3 bg-indigo-50/50 rounded-lg border border-indigo-100/50 text-[11px] text-slate-500 leading-snug">
+                Your browser speech engine is active. Standard voice will be used for playbacks.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Voice Selection */}
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex justify-between">
+                    <span>Active Voice Avatar</span>
+                    {selectedVoiceName && voices.find(v => v.name === selectedVoiceName)?.name.toLowerCase().includes('google') && (
+                      <span className="text-[9px] bg-green-50 text-green-600 px-1.5 py-0.2 rounded border border-green-100 font-bold tracking-tight">Premium Neural</span>
+                    )}
+                  </label>
+                  <select
+                    value={selectedVoiceName}
+                    onChange={(e) => {
+                      setSelectedVoiceName(e.target.value);
+                      stopNarratorSpeak();
+                    }}
+                    className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-700 font-medium outline-none focus:border-indigo-500"
+                  >
+                    {/* Prioritize filtered voices first */}
+                    {(() => {
+                      const currentLangCode = LANGUAGE_CODES[data.language || 'English'] || 'en-US';
+                      const langPrefix = currentLangCode.substring(0, 2).toLowerCase();
+                      const filtered = voices.filter(v => {
+                        const vLang = v.lang.toLowerCase().replace('_', '-');
+                        return vLang.startsWith(langPrefix) || vLang.split('-')[0] === langPrefix;
+                      });
+                      
+                      const others = voices.filter(v => !filtered.includes(v));
+                      
+                      return (
+                        <>
+                          <optgroup label={`${data.language || 'English'} Matching Human Voices`}>
+                            {filtered.length > 0 ? (
+                              filtered.map(v => (
+                                <option key={v.name} value={v.name}>
+                                  {v.name} ({v.lang}) {v.name.toLowerCase().match(/natural|neural|google|siri|premium|guy|jenny/i) ? '★' : ''}
+                                </option>
+                              ))
+                            ) : (
+                              <option disabled>No local matching voices found (using fallback)</option>
+                            )}
+                          </optgroup>
+                          {others.length > 0 && (
+                            <optgroup label="Other System Voices">
+                              {others.map(v => (
+                                <option key={v.name} value={v.name}>
+                                  {v.name} ({v.lang})
+                                </option>
+                              ))}
+                            </optgroup>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </select>
+                </div>
+
+                {/* Speed Slider */}
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center text-[10px] font-bold text-slate-400">
+                    <span className="uppercase">Speech Speed</span>
+                    <span className="text-indigo-600 font-mono text-xs">{narratorRate}x</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.75"
+                    max="1.25"
+                    step="0.05"
+                    value={narratorRate}
+                    onChange={(e) => {
+                      setNarratorRate(parseFloat(e.target.value));
+                      stopNarratorSpeak();
+                    }}
+                    className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-none"
+                  />
+                  <div className="flex justify-between text-[8px] text-slate-400 font-semibold px-0.5">
+                    <span>Deliberate & Human</span>
+                    <span>Standard</span>
+                    <span>Fast-paced</span>
+                  </div>
+                </div>
+
+                {/* Pitch Slider */}
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center text-[10px] font-bold text-slate-400">
+                    <span className="uppercase">Voice Pitch</span>
+                    <span className="text-indigo-600 font-mono text-xs">{narratorPitch}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.85"
+                    max="1.15"
+                    step="0.05"
+                    value={narratorPitch}
+                    onChange={(e) => {
+                      setNarratorPitch(parseFloat(e.target.value));
+                      stopNarratorSpeak();
+                    }}
+                    className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-none"
+                  />
+                </div>
+
+                {/* Test Speaking Preview */}
+                <div className="pt-1">
+                  <button
+                    onClick={() => {
+                      const sampleText = data.language === 'Spanish' 
+                        ? 'Hola. Soy tu avatar de voz artificial. Tu campaña publicitaria se encuentra completamente lista para su lanzamiento.' 
+                        : data.language === 'French'
+                        ? 'Bonjour. Je suis le narrateur de votre marque. Votre campagne est prête.'
+                        : 'Hello! I am your brand narration avatar. Let us listen to your ad scripts or review your quizzes.';
+                      startNarratorSpeak(sampleText, 'test', 9999);
+                    }}
+                    className={`w-full flex justify-center items-center gap-1.5 px-3 py-2 rounded-lg border font-semibold text-xs transition-all shadow-sm ${
+                      activeSpeechType === 'test'
+                        ? 'bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-100'
+                        : 'bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border-indigo-100/50'
+                    }`}
+                  >
+                    {activeSpeechType === 'test' ? (
+                      <>
+                        <StopCircle className="w-3.5 h-3.5 animate-pulse text-rose-500" />
+                        Stop Narration Test
+                      </>
+                    ) : (
+                      <>
+                        <Volume2 className="w-3.5 h-3.5" />
+                        Test Speech Settings
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -536,7 +782,13 @@ CTA: ${s.callToAction}
                     index={idx} 
                     onSeek={handleSeek} 
                     maxDuration={duration}
-                    language={data.language}
+                    isSpeaking={activeSpeechType === 'quiz' && speechActiveId === idx}
+                    onToggleSpeak={(e) => {
+                      e.stopPropagation();
+                      const optLabel = data.language === 'Spanish' ? 'Opción' : data.language === 'French' ? 'Option' : 'Option';
+                      const textToSpeak = `${quiz.question}. ${quiz.options.map((opt, i) => `${optLabel} ${i+1}: ${opt}`).join('. ')}`;
+                      startNarratorSpeak(textToSpeak, 'quiz', idx);
+                    }}
                   />
                 ))}
               </div>
@@ -685,15 +937,59 @@ CTA: ${s.callToAction}
                             <p className="text-xs text-slate-300">{script.format}</p>
                           </div>
                         </div>
-                        <button 
-                          onClick={() => copyScript(script, idx)}
-                          className={`p-2 rounded-lg transition-colors ${copiedScript === idx ? 'bg-green-500 text-white' : 'bg-white/10 hover:bg-white/20 text-white'}`}
-                        >
-                          {copiedScript === idx ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              const narratorHeader = data.language === 'Spanish' 
+                                ? `Anuncio para ${script.targetPlatform}. Duración estimada: ${script.format}.` 
+                                : `Narrating video script for ${script.targetPlatform}. Format scale: ${script.format}.`;
+                              
+                              const mainContent = `
+                                Hook: ${script.hook}. 
+                                Body: ${script.body}. 
+                                Call to action: ${script.callToAction}.
+                              `;
+                              startNarratorSpeak(`${narratorHeader} ${mainContent}`, 'ad', idx);
+                            }}
+                            className={`p-2 rounded-lg transition-colors flex items-center justify-center ${
+                              activeSpeechType === 'ad' && speechActiveId === idx 
+                                ? 'bg-indigo-600 text-white shadow-md' 
+                                : 'bg-white/10 hover:bg-white/20 text-white'
+                            }`}
+                            title={activeSpeechType === 'ad' && speechActiveId === idx ? "Stop narration playback" : "Listen to brand voice narration"}
+                          >
+                            {activeSpeechType === 'ad' && speechActiveId === idx ? (
+                              <StopCircle className="w-4 h-4 text-white animate-pulse" />
+                            ) : (
+                              <Volume2 className="w-4 h-4" />
+                            )}
+                          </button>
+
+                          <button 
+                            onClick={() => copyScript(script, idx)}
+                            className={`p-2 rounded-lg transition-colors ${copiedScript === idx ? 'bg-green-500 text-white' : 'bg-white/10 hover:bg-white/20 text-white'}`}
+                          >
+                            {copiedScript === idx ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                          </button>
+                        </div>
                       </div>
                       
                       <div className="p-5 space-y-4">
+                        {activeSpeechType === 'ad' && speechActiveId === idx && (
+                          <div className="flex items-center justify-between px-3 py-2 bg-indigo-50/70 border border-indigo-100 rounded-lg text-xs text-indigo-700 animate-in fade-in duration-300">
+                            <span className="font-bold flex items-center gap-1.5">
+                              <Mic2 className="w-4 h-4 text-indigo-600 animate-pulse" />
+                              Bio-Avatar Narrator Speaking ({narratorRate}x)...
+                            </span>
+                            <div className="flex gap-0.5 items-center h-4">
+                              <div className="w-0.5 bg-indigo-500 h-2.5 rounded-full animate-bounce [animation-delay:0.1s]"></div>
+                              <div className="w-0.5 bg-indigo-500 h-4 rounded-full animate-bounce [animation-delay:0.3s]"></div>
+                              <div className="w-0.5 bg-indigo-500 h-2 rounded-full animate-bounce [animation-delay:0.5s]"></div>
+                              <div className="w-0.5 bg-indigo-500 h-3.5 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                            </div>
+                          </div>
+                        )}
+
                         <div className="space-y-1">
                           <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Hook (0-3s)</label>
                           <p className="text-sm font-semibold text-slate-900 bg-yellow-50 p-2 rounded border border-yellow-100">{script.hook}</p>
@@ -739,37 +1035,16 @@ CTA: ${s.callToAction}
   );
 };
 
-const PlayableQuizCard: React.FC<{ quiz: QuizQuestion; index: number; onSeek: (time: number) => void; maxDuration: number; language?: SupportedLanguage }> = ({ quiz, index, onSeek, maxDuration, language = 'English' }) => {
+const PlayableQuizCard: React.FC<{ 
+  quiz: QuizQuestion; 
+  index: number; 
+  onSeek: (time: number) => void; 
+  maxDuration: number; 
+  isSpeaking: boolean;
+  onToggleSpeak: (e: React.MouseEvent) => void;
+}> = ({ quiz, index, onSeek, maxDuration, isSpeaking, onToggleSpeak }) => {
   const [selected, setSelected] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-
-  useEffect(() => {
-    // Cleanup speech on unmount
-    return () => {
-      window.speechSynthesis.cancel();
-    };
-  }, []);
-
-  const handleSpeak = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (isSpeaking) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-      return;
-    }
-
-    const textToSpeak = `${quiz.question}. ${quiz.options.map((opt, i) => `Option ${i+1}: ${opt}`).join('. ')}`;
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    const langCode = LANGUAGE_CODES[language] || 'en-US';
-    utterance.lang = langCode;
-    
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-
-    setIsSpeaking(true);
-    window.speechSynthesis.speak(utterance);
-  };
 
   const handleSelect = (idx: number) => {
     if (showResult) return;
@@ -826,11 +1101,11 @@ const PlayableQuizCard: React.FC<{ quiz: QuizQuestion; index: number; onSeek: (t
         </div>
         <div className="flex items-center gap-2">
            <button 
-             onClick={handleSpeak}
-             className={`flex items-center gap-1 text-[10px] font-medium px-2 py-1 rounded-full transition-colors border ${isSpeaking ? 'bg-indigo-600 text-white border-indigo-600' : 'text-slate-400 hover:text-indigo-600 bg-slate-50 hover:bg-indigo-50 border-slate-100'}`}
+             onClick={onToggleSpeak}
+             className={`flex items-center gap-1 text-[10px] font-medium px-2 py-1 rounded-full transition-colors border ${isSpeaking ? 'bg-indigo-600 text-white border-indigo-600 font-bold' : 'text-slate-400 hover:text-indigo-600 bg-slate-50 hover:bg-indigo-50 border-slate-100'}`}
              title={isSpeaking ? "Stop Reading" : "Read Aloud"}
            >
-             {isSpeaking ? <StopCircle className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+             {isSpeaking ? <StopCircle className="w-3 h-3 text-white animate-pulse" /> : <Volume2 className="w-3 h-3" />}
              {isSpeaking ? 'Stop' : 'Read'}
            </button>
 
@@ -862,9 +1137,18 @@ const PlayableQuizCard: React.FC<{ quiz: QuizQuestion; index: number; onSeek: (t
 
       {/* AI Reasoning - The "Why" this matters */}
       {quiz.reasoning && (
-        <div className="mb-4 p-2.5 bg-gradient-to-r from-slate-50 to-white border border-slate-100 rounded-lg text-xs text-slate-600 italic flex gap-2 items-start shadow-sm">
-           <Sparkles className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0 mt-0.5" />
-           <span className="leading-snug">"{quiz.reasoning}"</span>
+        <div className="mb-4 p-2.5 bg-gradient-to-r from-slate-50 to-white border border-slate-100 rounded-lg text-xs text-slate-600 italic flex justify-between items-center shadow-sm">
+           <div className="flex gap-2 items-start">
+             <Sparkles className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0 mt-0.5" />
+             <span className="leading-snug">"{quiz.reasoning}"</span>
+           </div>
+           {isSpeaking && (
+              <div className="flex gap-0.5 items-center h-3 flex-shrink-0 ml-2">
+                <div className="w-0.5 bg-indigo-500 h-1.5 rounded-full animate-bounce [animation-delay:0.1s]"></div>
+                <div className="w-0.5 bg-indigo-500 h-3 rounded-full animate-bounce [animation-delay:0.3s]"></div>
+                <div className="w-0.5 bg-indigo-500 h-0.5 rounded-full animate-bounce [animation-delay:0.5s]"></div>
+              </div>
+           )}
         </div>
       )}
 

@@ -251,7 +251,7 @@ function App() {
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center text-sm text-slate-500 gap-1">
                <Video className="w-4 h-4" />
-               <span>Powered by Gemini 2.5 Flash</span>
+               <span>Powered by Gemini 3.5</span>
             </div>
           </div>
         </div>
@@ -269,7 +269,7 @@ function App() {
             <Sparkles className="w-4 h-4 text-indigo-400" />
             <span>AI-Driven Engagement Platform</span>
           </div>
-          <p>© 2024 AmplifyAI. Built with Gemini & React.</p>
+          <p>© 2026 AmplifyAI. Built with Gemini & React.</p>
         </div>
       </footer>
     </div>
