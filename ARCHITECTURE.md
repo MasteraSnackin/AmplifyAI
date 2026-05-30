@@ -27,7 +27,6 @@ The following functional and non-functional requirements drive the design.
 - **Resilience** — graceful, user-friendly handling of API errors (rate limits, oversized files, safety blocks, network failures).
 - **Localisation** — output in 12+ languages with cultural adaptation, not literal translation.
 - **Data minimisation** — no server-side storage of user video; persistence is local to the browser.
-- **Security** — `<ADD PRODUCTION KEY-HANDLING STRATEGY HERE>`; in the current build the API key is bundled client-side and intended for trusted/demo use only.
 
 ---
 
