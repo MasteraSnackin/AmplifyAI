@@ -223,13 +223,16 @@ GEMINI_API_KEY=your_google_ai_studio_api_key
 
 ### 🎥 Video Demo
 
-Watch the full walkthrough of AmplifyAI turning raw footage into quizzes, ad scripts, and social campaigns:
+Watch the full walkthrough of AmplifyAI turning raw footage into quizzes, ad scripts, and social campaigns. **Click the thumbnail below to play:**
 
-**▶️ [Watch the Demo Video](https://share.screenshow.app/shareablevideos/ueIVv7)**
+<p align="center">
+  <a href="https://share.screenshow.app/shareablevideos/ueIVv7">
+    <img src="docs/screenshots/video-thumbnail.png" alt="▶ Watch the AmplifyAI demo video" width="720">
+  </a>
+</p>
 
-[![Watch the AmplifyAI demo](docs/screenshots/results-quizzes.png)](https://share.screenshow.app/shareablevideos/ueIVv7)
+<p align="center"><b>▶️ <a href="https://share.screenshow.app/shareablevideos/ueIVv7">Watch the Demo Video</a></b></p>
 
-> Click the image above to play the demo.
 
 ### Interactive Quizzes & Viral Scoring
 
