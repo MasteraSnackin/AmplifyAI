@@ -2,11 +2,11 @@
 
 ![AmplifyAI Banner](https://img.shields.io/badge/AI-Gemini%202.5%20Flash-indigo) ![React](https://img.shields.io/badge/React-19-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue) ![License](https://img.shields.io/badge/License-MIT-green)
 
-**AmplifyAI** is an AI-powered marketing agent designed to solve the content bottleneck for brands and events. By leveraging **Google's Gemini 2.5 Multimodal AI**, it acts as a "Senior Marketing Strategist in a Box."
+**AmplifyAI** is an AI-powered marketing agent designed to solve the content bottleneck for brands and events. By leveraging **Google's Gemini Multimodal AI**, it acts as a "Senior Marketing Strategist in a Box."
 
 Instead of manually watching hours of event footage, webinars, or podcasts, you simply upload the video, define your **Target Audience** and **Campaign Goal**, and AmplifyAI automatically generates high-engagement, viral social campaigns tailored to your strategy.
 
-## 🏆 KXSB Hackathon Submission
+## 🏆 Hackathon Submission
 
 This project directly addresses the challenge to "deliver a step-change in visibility and prominence through innovative advertising."
 
@@ -21,7 +21,6 @@ This project directly addresses the challenge to "deliver a step-change in visib
 
 ### 🧠 Strategic Context Engine
 Before analysis, you tell the AI who you are targeting (e.g., "Gen Z Investors") and what you want to achieve (e.g., "Showcase Innovation"). The AI adapts its tone, clip selection, and writing style to meet these goals.
-- **KXSB Preset**: Includes a one-click configuration for the hackathon's target brand voice ("Bold, Futuristic, Authentic").
 
 ### 🎬 Multimodal Ad Scripting
 Automatically writes production-ready video scripts for your creative team:
@@ -49,8 +48,6 @@ Turns passive video consumption into active engagement.
 ---
 
 ## 🏗️ Architecture & Diagrams
-
-For deep technical details, including C4 Models, Sequence Diagrams, and Data Flow Diagrams, please see [ARCHITECTURE.md](./ARCHITECTURE.md).
 
 ---
 
@@ -86,7 +83,6 @@ For deep technical details, including C4 Models, Sequence Diagrams, and Data Flo
    - **Target Audience**: Who are you talking to?
    - **Goal**: Awareness, Conversion, or Education?
    - **Tone**: Witty, Professional, Urgent?
-   - *Tip: Use the "KXSB Preset" button for a quick start.*
 3. **Transcript (Optional)**: Paste the video transcript/captions to help the AI extract specific facts and quotes with higher precision.
 4. **Analyze**: Click "Analyze". The AI will process the video frame-by-frame.
 5. **Review & Edit**:
