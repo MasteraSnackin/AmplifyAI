@@ -47,14 +47,23 @@ The result is a complete campaign package: interactive trivia quizzes anchored t
 ## Features
 
 - **🧠 Strategic Context Engine** — Tell the AI who you're targeting and what you want to achieve; it adapts tone, clip selection, and copywriting to match. Includes a one-click **KXSB preset** for a bold, futuristic brand voice.
+
 - **🎬 Multimodal Ad Scripting** — Auto-generates production-ready scripts in three formats: Short (15s) for TikTok/Reels, Medium (30s) for LinkedIn, and Long (60s) for YouTube ads — each with a hook, body, visual cues, and CTA.
+
 - **🧪 A/B Testing & Side-by-Side Editor** — Generates two variations (Primary vs. Alternate) for every social post and lets you compare and edit them simultaneously in a split-view editor.
+
 - **📈 Viral Potential Scoring** — Assigns a 1–100 Viral Score to key moments and explains *why* each clip resonates with the target audience.
+
 - **🌍 Global Campaigns** — Cross-language repurposing into 12+ languages (Spanish, French, German, Portuguese, Japanese, Chinese, Italian, Russian, Arabic, Hindi, Korean) with cultural localization, not just literal translation.
+
 - **🎮 Interactive "Playable" Quizzes** — Turns passive footage into active engagement with a "Jump to Evidence" feature that seeks the player to the exact timestamp where an answer is revealed.
+
 - **🎙️ Narrator Voice Customizer** — Browser-based text-to-speech with selectable voices, adjustable speed/pitch, and a "human-sounding" narrator profile for previewing scripts and quizzes.
+
 - **📊 Campaign Analytics Dashboard** — Simulated performance metrics (impressions, viral reach, shares) with goal-aware KPIs rendered via interactive Recharts visualizations.
+
 - **🎯 Sentiment Timeline** — Color-coded markers on the video timeline highlight Positive, Exciting, and Neutral moments.
+
 - **📤 Export & Persistence** — One-click export to a Canva-ready CSV, downloadable strategy reports, video frame capture, and automatic local persistence so work survives a page refresh.
 
 ---
@@ -209,11 +218,30 @@ GEMINI_API_KEY=your_google_ai_studio_api_key
 
 ## Screenshots / Demo
 
-> Replace the placeholders below with real screenshots or a GIF walkthrough.
+### Interactive Quizzes & Viral Scoring
+The results dashboard pairs the source video (with a live "Viral Hook" caption overlay and sentiment timeline) with AI-generated trivia, per-question Viral Scores, and strategic reasoning.
 
-| Upload & Strategy | Results Dashboard | Analytics |
-| --- | --- | --- |
-| ![Upload screen placeholder](https://placehold.co/400x250?text=Upload+%26+Strategy) | ![Dashboard placeholder](https://placehold.co/400x250?text=Results+Dashboard) | ![Analytics placeholder](https://placehold.co/400x250?text=Analytics) |
+![Analysis Results — Interactive Quizzes](docs/screenshots/results-quizzes.png)
+
+### Answer Reveal & "Jump to Evidence"
+Each quiz highlights the correct answer and links straight back to the exact timestamp in the video where the answer is revealed.
+
+![Quiz answer reveal](docs/screenshots/quiz-answer-reveal.png)
+
+### Social Variations (A/B Editor)
+Compare and edit Primary vs. Alternate post variants side-by-side for Twitter, LinkedIn, and Instagram — with live character counts and editable hashtags.
+
+![Social Variations A/B editor](docs/screenshots/social-variations-ab.png)
+
+### Multi-Length Ad Scripts
+Production-ready 15s / 30s / 60s scripts, each with a hook, script body, visual cues, and call to action.
+
+![Ad Scripts](docs/screenshots/ad-scripts.png)
+
+### Campaign Analytics
+A goal-aware performance dashboard with KPI cards and interactive Recharts visualizations for engagement and growth velocity.
+
+![Performance Tracking dashboard](docs/screenshots/analytics-dashboard.png)
 
 **Live demo:** `<ADD LIVE DEMO URL HERE>`
 
