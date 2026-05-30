@@ -11,9 +11,10 @@
 ![Vite](https://img.shields.io/badge/Vite-6-646cff)
 ![AI](https://img.shields.io/badge/AI-Gemini%203.5%20Flash-4f46e5)
 
-**🎥 [Watch the Demo Video](https://share.screenshow.app/shareablevideos/ueIVv7)**
+**🎥 [Watch the Demo Video](https://share.screenshow.app/shareablevideos/ueIVv7)** &nbsp;•&nbsp; **📊 [View the Pitch Deck](https://drive.google.com/file/d/10jqSESQXiAlqUqGHC_CZte-8XVZbPKOc/view?usp=sharing)**
 
 ---
+
 
 ## Description
 
